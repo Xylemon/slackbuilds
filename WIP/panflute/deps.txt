@@ -1,0 +1,27 @@
+ |----- + dbus-python #
+ |----- + GConf #
+ |----- + gnome-python-desktop *
+ |	|------	+ gnome-python *
+ |	|	|------ + libgnome *
+ |	|	|	|------ + gnome-vfs *
+ |	|	|	|	|------ x avahi *
+ |	|	|	|	|	|------ + libdaemon *
+ |	|	|	|	|	|------ + mono * MONO=yes
+ |	|	|	|	|	|	|------ + gtk-sharp *
+ |	|	|	|	|------ + gnome-mime-data *
+ |	|	|	|	|------ + libbonobo *
+ |	|	|	|	|	|------ + ORBit2 *
+ |	|	|------ x libgnomeui *
+ |	|	|	|------ ! It has a series of deps I don't care to list here.
+ |	|	|------ + pyorbit *
+ |	|	|	|------ + ORBit2 *
+ |----- + gnome-python2-gconf *
+ |----- + intltool #
+ |----- + numpy #
+ |----- + python #
+ |----- + pygtk #
+ |----- x python-mpd ? (for MPD)
+ |----- + pygobject #
+ |----- + python-notify2 *
+ |----- x python-xmmsclient ? (for XMMS2)
+ |----- x pyxmms * (for XMMS)

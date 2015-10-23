@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+	|-----handy-ruler------------------------------------------------------|
+panflute: panflute (Common Interface For Controlling Music Players)
+panflute:      
+panflute: While most music players offer some way to let other programs control
+panflute: them and get status information, most of them implement their own
+panflute: unique interface. Panflute solves this problem by handling all the
+panflute: player-specific details for you. It exposes a MPRIS interface that
+panflute: hides the details of whichever player is running, allowing
+panflute: remote-player-control applications to code to a single interface.
+panflute: 
+panflute: Homepage: http://www.kuliniewicz.org/blog/archives/tag/panflute/
+panflute:

@@ -1,0 +1,8 @@
+wmmixer-oss4 is an update of the original wmmixer to support OSS4 properly. Works great with VMIX to
+provide a solid mixer experience in WindowMaker. You can even customize the mixer to have icons for an
+application taking up one of the VMIX slots. Only down side to this is applications aren't usually tied
+to one spot in VMIX so the icon won't always match. It can also work with OSS3 as well.
+
+Note: This will replace (and probably conflict) with the other wmmixer SlackBuild on SBo. Remove it if
+you have it installed. You'll also need a customized ".wmmixer" file in your home folder. Please look 
+for "home.wmmixer" under /usr/doc for details.

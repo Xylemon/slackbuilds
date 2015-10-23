@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+NGUNIX: NGUNIX (Software Quake Engine for Unix)
+NGUNIX:      
+NGUNIX: A fork of leilei's Quake engine, Engoo, a software based engine  
+NGUNIX: with many features. Some examples are: colored lighting, water 
+NGUNIX: effects, OpenGL-like texturing, virtual resolutions (looks similar to
+NGUNIX: DOSQuake), and more.
+NGUNIX: 
+NGUNIX: Alternatively, you could configure NGUNIX to look and behave exactly
+NGUNIX: like DOSQuake for an experience similar to Chocolate Doom.
+NGUNIX: 
+NGUNIX: Homepage: https://github.com/eukos16/NGUNIX

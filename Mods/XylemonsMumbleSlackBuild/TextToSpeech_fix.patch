@@ -1,0 +1,12 @@
+diff -Naur mumble-1.2.10/src/mumble/TextToSpeech_unix.cpp mumble-1.2.10-fix/src/mumble/TextToSpeech_unix.cpp 
+--- mumble-1.2.10/src/mumble/mumbleTextToSpeech_unix.cpp	2015-07-09 12:51:03.000000000 -0700
++++ mumble-1.2.10-fix/src/mumble/TextToSpeech_unix.cpp	2015-07-16 10:26:19.203588896 -0700
+@@ -33,7 +33,7 @@
+ #include "TextToSpeech.h"
+ 
+ #ifdef USE_SPEECHD
+-#include <libspeechd.h>
++#include </usr/include/speech-dispatcher/libspeechd.h>
+ #endif
+ 
+ #include "Global.h"

@@ -1,0 +1,214 @@
+diff -Naur dunst/dbus.c dunst-graceful-termination-handling/dbus.c
+--- dunst/dbus.c	2015-08-26 05:31:12.000000000 -0700
++++ dunst-graceful-termination-handling/dbus.c	2015-09-09 21:09:04.135863942 -0700
+@@ -434,6 +434,9 @@
+ 
+ void dbus_tear_down(int owner_id)
+ {
++        if (introspection_data)
++                g_dbus_node_info_unref(introspection_data);
++
+         g_bus_unown_name(owner_id);
+ }
+ 
+diff -Naur dunst/dunst.c dunst-graceful-termination-handling/dunst.c
+--- dunst/dunst.c	2015-08-26 05:31:12.000000000 -0700
++++ dunst-graceful-termination-handling/dunst.c	2015-09-09 21:09:33.671862790 -0700
+@@ -34,6 +34,7 @@
+ #include "utils.h"
+ #include "rules.h"
+ #include "notification.h"
++#include "menu.h"
+ 
+ #include "option_parser.h"
+ #include "settings.h"
+@@ -272,7 +273,7 @@
+         return false;
+ }
+ 
+-gboolean pause_signal (gpointer data)
++gboolean pause_signal(gpointer data)
+ {
+         pause_display = true;
+         wake_up();
+@@ -280,7 +281,7 @@
+         return G_SOURCE_CONTINUE;
+ }
+ 
+-gboolean unpause_signal (gpointer data)
++gboolean unpause_signal(gpointer data)
+ {
+         pause_display = false;
+         wake_up();
+@@ -288,6 +289,30 @@
+         return G_SOURCE_CONTINUE;
+ }
+ 
++gboolean quit_signal(gpointer data)
++{
++        g_main_loop_quit(mainloop);
++
++        return G_SOURCE_CONTINUE;
++}
++
++static void teardown_notification(gpointer data)
++{
++        notification *n = data;
++        notification_free(n);
++}
++
++static void teardown(void)
++{
++        regex_teardown();
++
++        g_queue_free_full(history, teardown_notification);
++        g_queue_free_full(displayed, teardown_notification);
++        g_queue_free_full(queue, teardown_notification);
++
++        x_free();
++}
++
+ int main(int argc, char *argv[])
+ {
+ 
+@@ -364,14 +389,30 @@
+ 
+         g_source_attach(x11_source, NULL);
+ 
+-        g_unix_signal_add(SIGUSR1, pause_signal, NULL);
+-        g_unix_signal_add(SIGUSR2, unpause_signal, NULL);
++        guint pause_src = g_unix_signal_add(SIGUSR1, pause_signal, NULL);
++        guint unpause_src = g_unix_signal_add(SIGUSR2, unpause_signal, NULL);
++
++        /* register SIGINT/SIGTERM handler for
++         * graceful termination */
++        guint term_src = g_unix_signal_add(SIGTERM, quit_signal, NULL);
++        guint int_src = g_unix_signal_add(SIGINT, quit_signal, NULL);
+ 
+         run(NULL);
+         g_main_loop_run(mainloop);
++        g_main_loop_unref(mainloop);
++
++        /* remove signal handler watches */
++        g_source_remove(pause_src);
++        g_source_remove(unpause_src);
++        g_source_remove(term_src);
++        g_source_remove(int_src);
++
++        g_source_destroy(x11_source);
+ 
+         dbus_tear_down(owner_id);
+ 
++        teardown();
++
+         return 0;
+ }
+ 
+diff -Naur dunst/menu.c dunst-graceful-termination-handling/menu.c
+--- dunst/menu.c	2015-08-26 05:31:12.000000000 -0700
++++ dunst-graceful-termination-handling/menu.c	2015-09-09 21:09:39.148862577 -0700
+@@ -15,6 +15,37 @@
+ #include "settings.h"
+ #include "dbus.h"
+ 
++static bool is_initialized = false;
++static regex_t cregex;
++
++static int regex_init(void)
++{
++        if (is_initialized)
++                return 1;
++
++        char *regex =
++            "\\b(https?://|ftps?://|news://|mailto:|file://|www\\.)"
++            "[-[:alnum:]_\\@;/?:&=%$.+!*\x27,~#]*"
++            "(\\([-[:alnum:]_\\@;/?:&=%$.+!*\x27,~#]*\\)|[-[:alnum:]_\\@;/?:&=%$+*~])+";
++        int ret = regcomp(&cregex, regex, REG_EXTENDED | REG_ICASE);
++        if (ret != 0) {
++                fputs("failed to compile regex", stderr);
++                return 0;
++        } else {
++                is_initialized = true;
++                return 1;
++        }
++}
++
++void regex_teardown(void)
++{
++        if (is_initialized)
++        {
++                regfree(&cregex);
++                is_initialized = false;
++        }
++}
++
+         /*
+          * Exctract all urls from a given string.
+          *
+@@ -23,25 +54,11 @@
+          */
+ char *extract_urls(const char *to_match)
+ {
+-        static bool is_initialized = false;
+-        static regex_t cregex;
+-
+-        if (!is_initialized) {
+-                char *regex =
+-                    "\\b(https?://|ftps?://|news://|mailto:|file://|www\\.)"
+-                    "[-[:alnum:]_\\@;/?:&=%$.+!*\x27,~#]*"
+-                    "(\\([-[:alnum:]_\\@;/?:&=%$.+!*\x27,~#]*\\)|[-[:alnum:]_\\@;/?:&=%$+*~])+";
+-                int ret = regcomp(&cregex, regex, REG_EXTENDED | REG_ICASE);
+-                if (ret != 0) {
+-                        printf("failed to compile regex\n");
+-                        return NULL;
+-                } else {
+-                        is_initialized = true;
+-                }
+-        }
+-
+         char *urls = NULL;
+ 
++        if (!regex_init())
++                return NULL;
++
+         const char *p = to_match;
+         regmatch_t m;
+ 
+diff -Naur dunst/menu.h dunst-graceful-termination-handling/menu.h
+--- dunst/menu.h	2015-08-26 05:31:12.000000000 -0700
++++ dunst-graceful-termination-handling/menu.h	2015-09-09 21:09:44.326862375 -0700
+@@ -5,3 +5,4 @@
+ char *extract_urls(const char *to_match);
+ void open_browser(const char *url);
+ void invoke_action(const char *action);
++void regex_teardown(void);
+diff -Naur dunst/x.c dunst-graceful-termination-handling/x.c
+--- dunst/x.c	2015-08-26 05:31:12.000000000 -0700
++++ dunst-graceful-termination-handling/x.c	2015-09-09 21:09:49.337862180 -0700
+@@ -921,6 +921,15 @@
+         }
+ }
+ 
++void x_free(void)
++{
++        cairo_surface_destroy(cairo_ctx.surface);
++        cairo_destroy(cairo_ctx.context);
++
++        if (xctx.dpy)
++                XCloseDisplay(xctx.dpy);
++}
++
+         /*
+          * Setup X11 stuff
+          */
+diff -Naur dunst/x.h dunst-graceful-termination-handling/x.h
+--- dunst/x.h	2015-08-26 05:31:12.000000000 -0700
++++ dunst-graceful-termination-handling/x.h	2015-09-09 21:09:58.597861818 -0700
+@@ -77,6 +77,7 @@
+ /* X misc */
+ bool x_is_idle(void);
+ void x_setup(void);
++void x_free(void);
+ 
+ gboolean x_mainloop_fd_dispatch(GSource * source, GSourceFunc callback,
+                                 gpointer user_data);

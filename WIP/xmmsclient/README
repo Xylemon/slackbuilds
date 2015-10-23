@@ -1,0 +1,47 @@
+Panflute provides a common interface for controlling music player software.  While most music 
+players offer some way to let other programs control them and get status information, most of them
+implement their own unique interface.  Even the players that implement an MPRIS interface often
+have quirks unique to their particular implementation. These issues make it difficult for a
+program to communicate with whichever music player the user happens to prefer.
+
+Panflute solves this problem by handling all the player-specific details for you.  It exposes a
+MPRIS interface that hides the details of whichever player is running, allowing
+remote-player-control applications to code to a single interface.  Panflute also provides
+extensions that expose additional features not available through MPRIS, such as setting song
+ratings or being notified when the playback position changes (saving the need to repeatedly poll
+for this information).
+
+Panflute also comes with a GNOME panel applet to demonstrate how the Panflute backend daemon can
+be used.
+
+Panflute supports the following music players:
+
+  * Amarok (>= 1.4)
+  * Audacious
+  * Banshee (>= 1.0)
+  * Clementine
+  * Decibel
+  * Exaile
+  * Guayadeque
+  * Listen
+  * MOC
+  * MPD
+  * Muine
+  * Pithos
+  * Qmmp
+  * Quod Libet/
+  * Rhythmbox
+  * Songbird
+  * VLC
+  * XMMS
+  * XMMS2
+
+Panflute is the successor to Music Applet, redesigned from the ground up to allow other programs
+to use its music player abstraction layer.
+
+Note: Panflute hasn't been updated since 2010, some of these music applications may not work as
+intended. Try starting the daemon, "/usr/bin/panflute-daemon" then launch the testing application:
+"/usr/bin/panflute-tests" HOWEVER it can overwrite music player data, so be sure to BACK UP before
+testing and launch it with: "/usr/bin/panflute-tests -destroy-my-data"
+
+You can also start an applet by doing: "/usr/libexec/panflute-applet"

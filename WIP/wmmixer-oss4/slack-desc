@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+       |-----handy-ruler--------------------------------------------------------|
+wmmixer: wmmixer (Open Sound System Mixer DockApp)
+wmmixer: 
+wmmixer: wmmixer is an update of the original wmmixer to support OSS4 properly.
+wmmixer: Works great with VMIX to provide a solid mixer experience in
+wmmixer: WindowMaker. You can even customize the mixer to have icons for an
+wmmixer: application taking up one of the VMIX slots.
+wmmixer:
+wmmixer: Homepage: https://github.com/puyo/wmmixer
+wmmixer:
+wmmixer:
+wmmixer:

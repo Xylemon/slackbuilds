@@ -1,0 +1,33 @@
+A fork of leilei's Quake engine, Engoo, a software based engine with many features. Some examples
+are: colored lighting, water effects, OpenGL-like texturing, virtual resolutions (looks similar to
+DOSQuake), and more.
+
+Alternatively, you could configure NGUNIX to look and behave exactly like DOSQuake for an experience
+similar to Chocolate Doom.
+
+Since it's based on old ASM code, it builds a 32 bit version only. Besides the compat32 packages of
+gcc, you'll also need: libXext-compat32, libX11-compat32, libXau-compat32, libxcb-compat32,
+libXdmcp-compat32, and libXxf86dga-compat32. You can get these from AlienBOB's 32bit repo.
+
+fmodapi 32bit packages is an optional dependency, for ogg and flac music play back. Activate it by
+doing "FMOD=yes ./NGUNIX.SlackBuild" to build support.
+
+Another optional dependency is xmms-ctl, to use XMMS for music playback. Do 
+"XMMS=yes ./NGUNIX.SlackBuild" to build with XMMS support.
+
+Notes:
+
+This SlackBuild moves the executable into, "/usr/share/games/quake/ngunix". This is to allow
+other Quake engines to be placed in here, for example: "/usr/share/games/quake/darkplaces".
+
+Your id1 folder (and mods) must go into, "/usr/share/games/quake/ngunix", for there is no home
+folder for data. You should have permissions to modify this folder with the games group.
+
+Higher resolutions (ex. 1024x768) and mods will use a bit of memory and go over x11quake's default of
+8 megs. To fix this, simply, "add -mem 12" to up the amount used. The number may need to be higher
+or lower depending on what you're doing.
+
+Some recommendations: VisPatch for transparent water, .lit files for colored lighting, .rtlights
+files for coronas.
+
+Audio can work under OSS3 but is focused on OSS4. OSS emulation under ALSA will NOT work.

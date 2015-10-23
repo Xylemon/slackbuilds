@@ -1,0 +1,21 @@
+--- utox-a/Makefile	2015-09-15 14:07:27.000000000 -0700
++++ utox-b/Makefile	2015-09-21 06:21:22.639264645 -0700
+@@ -52,7 +52,7 @@
+ endif
+ 
+ DESTDIR ?=
+-PREFIX ?= /usr/local
++PREFIX ?= /usr
+ 
+ SRC = $(wildcard *.c png/png.c)
+ OBJ = $(SRC:.c=.o)
+@@ -103,8 +103,8 @@
+ 	install -m 644 utox.desktop $(DESTDIR)$(PREFIX)/share/applications/utox.desktop
+ 	if [ "$(UNITY)" -eq "1" ]; then echo "X-MessagingMenu-UsesChatSection=true" >> $(DESTDIR)$(PREFIX)/share/applications/utox.desktop; fi
+ 
+-	mkdir -p $(DESTDIR)$(PREFIX)/share/man/man1
+-	install -m 644 utox.1 $(DESTDIR)$(PREFIX)/share/man/man1/utox.1
++	mkdir -p $(DESTDIR)$(PREFIX)/man/man1
++	install -m 644 utox.1 $(DESTDIR)$(PREFIX)/man/man1/utox.1
+ 
+ main.o: xlib/main.c xlib/keysym2ucs.c

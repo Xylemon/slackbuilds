@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+              |-----handy-ruler--------------------------------------------------------|
+xmms-audiofile: xmms-audiofile (XMMS Audio File Library Plug-in)
+xmms-audiofile: 
+xmms-audiofile: This plug-in for XMMS allows users to play any file which the Audio 
+xmms-audiofile: File Library can read. Common formats such as AIFF, AIFF-C, WAVE, and
+xmms-audiofile: NeXT/Sun .snd/.au are supported.
+xmms-audiofile: 
+xmms-audiofile: Homepage: http://www.68k.org/~michael/xmms/
+xmms-audiofile:
+xmms-audiofile:
+xmms-audiofile:
+xmms-audiofile:

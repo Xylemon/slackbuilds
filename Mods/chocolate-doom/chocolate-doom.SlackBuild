@@ -1,0 +1,105 @@
+#!/bin/sh
+
+# Slackware build script for chocolate-doom
+
+# Written by B. Watson (yalhcru@gmail.com)
+
+# Licensed under the WTFPL. See http://www.wtfpl.net/txt/copying/ for details.
+
+PRGNAM=chocolate-doom
+VERSION=${VERSION:-2.2.1}
+BUILD=${BUILD:-1}
+TAG=${TAG:-_SBo}
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i486 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/SBo}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+set -e
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PRGNAM-$VERSION
+tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+cd $PRGNAM-$VERSION
+chown -R root:root .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+# Grr. Newer binutils includes a windres command, which doesn't seem to work
+# like the actual windows one (configure lacks switches to disable windres)
+patch -p1 < $CWD/disable_windres.diff
+patch -p1 < $CWD/dwfpatch-chocolate-doom-2.2.0.diff
+autoreconf -if
+
+# NB: Upstream uses --docdir in a weird way: docs for chocolate-doom
+# go in $docdir, the others go in e.g. "$docdir/../chocolate-hexen/".
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/$PRGNAM-$VERSION/$PRGNAM \
+  --build=$ARCH-slackware-linux
+
+make
+make install DESTDIR=$PKG
+
+# install-strip fails to strip the *-setup binaries.
+strip $PKG/usr/games/*
+
+gzip -9 $PKG/usr/man/man?/*
+
+# Move icons to standard Slackware pixmap icon dir:
+mv $PKG/usr/share/icons $PKG/usr/share/pixmaps
+
+# Upstream doesn't include .desktop files or icons for the other games,
+# we'll generate them.
+cd $PKG/usr/share/applications
+  for GAME in Heretic Hexen Strife; do
+    game="$( echo $GAME | tr A-Z a-z )"
+    sed -e "s,Doom,$GAME,g" -e "s,doom,$game,g" \
+      $PRGNAM.desktop \
+      > chocolate-$game.desktop
+    ln -s $PRGNAM.png $PKG/usr/share/pixmaps/chocolate-$game.png
+  done
+cd -
+
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}

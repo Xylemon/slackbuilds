@@ -1,0 +1,18 @@
+--- dunst/notification.c	2015-08-26 05:31:12.000000000 -0700
++++ dunst-fix-memleaks/notification.c	2015-09-09 21:04:54.098873692 -0700
+@@ -156,6 +156,15 @@
+         free(n->msg);
+         free(n->dbus_client);
+ 
++        if (n->category && *n->category != '\0')
++                g_free(n->category);
++
++        if (n->text_to_render)
++                g_free(n->text_to_render);
++
++        if (n->urls)
++                g_free(n->urls);
++
+         if (n->actions) {
+                 g_strfreev(n->actions->actions);
+                 free(n->actions->dmenu_str);
