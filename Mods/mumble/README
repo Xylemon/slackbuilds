@@ -13,6 +13,9 @@ This will require speech-dispatcher and espeak.
 If you want the mumble overlay:
     OVERLAY=yes ./mumble.SlackBuild
 
+If you want to build with OSS support only:
+    OSS=yes ./mumble.SlackBuild
+
 If your system is x86_64 based, you can have this script build a
 32-bit libmumble. This will add in a 32-bit library for the
 mumble-overlay script to use for compatability. Please note, you

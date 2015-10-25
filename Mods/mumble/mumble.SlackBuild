@@ -33,6 +33,7 @@ G15=${G15:-no}
 OVERLAY=${OVERLAY:-no}
 SPEECHD=${SPEECHD:-no}
 COMPAT32=${COMPAT32:-no}
+OSS=${OSS:-no}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -64,6 +65,7 @@ fi
 BUILD_G15=""
 BUILD_OVERLAY=""
 BUILD_SPEECHD=""
+BUILD_OSS=""
 
 if [ "$G15" = "no" ]; then
   BUILD_G15="CONFIG+=no-g15"
@@ -74,7 +76,11 @@ if [ "$OVERLAY" = "no" ]; then
 fi
 
 if [ "$SPEECHD" = "no" ]; then
-  BUILD_OVERLAY="CONFIG+=no-speechd"
+  BUILD_SPEECHD="CONFIG+=no-speechd"
+fi
+
+if [ "$OSS" = "yes" ]; then
+  BUILD_OSS="CONFIG+=no-alsa"
 fi
 
 set -e
@@ -112,6 +118,7 @@ qmake \
   CONFIG+=no-bonjour \
   $BUILD_G15 \
   $BUILD_OVERLAY \
+  $BUILD_OSS \
   $BUILD_SPEECHD
 
 make release

@@ -27,7 +27,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=NGUNIX
-VERSION=${VERSION:-d8a0eab481a74cb83522dc7a69e9562cac01637a}
+VERSION=${VERSION:-b7af7693e07b90984603e7e942d1676ddde897db}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -45,6 +45,10 @@ TMP=${TMP:-/tmp/SBo}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
+FMOD=${FMOD:-no}
+NOASM=${NOASM:-no}
+XMMS=${XMMS:-no}
+
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
   LIBDIRSUFFIX=""
@@ -59,23 +63,21 @@ else
   LIBDIRSUFFIX=""
 fi
 
-# Build options
-if [ "${XMMS:-yes}" = "yes" ]; then
-  xmms="-DXMMSCTL"
-else
-  xmms=""
+BUILD_FMOD=""
+BUILD_NOASM=""
+BUILD_XMMS=""
+
+
+if [ "$FMOD" = "yes" ]; then
+  BUILD_FMOD="-DFMOD LDFLAGS=-lfmodex"
 fi
 
-if [ "${FMOD:-yes}" = "yes" ]; then
-  fmod="-DFMOD LDFLAGS=-lfmodex"
-else
-  fmod=""
+if [ "$NOASM" = "yes" ]; then
+  BUILD_NOASM="-DNOASM"
 fi
 
-if [ "${DNOASM:-yes}" = "yes" ]; then
-  dnoasm="-DNOASM"
-else
-  dnoasm=""
+if [ "$XMMS" = "yes" ]; then
+  BUILD_XMMS="-DXMMSCTL"
 fi
 
 set -e # Exit on most errors
@@ -94,7 +96,7 @@ find -L . \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 # Builds release for we don't need a debug, at least I assume you don't
-make BASE_CFLAGS=$xmms $fmod $dnoasm build_release
+make build_release 'BASE_CFLAGS='"$BUILD_FMOD $BUILD_NOASM $BUILD_XMMS"
 
 # Makes these folders so we can copy it into the Slackware games standard
 # It goes into a sub folder because this can allow installation of
