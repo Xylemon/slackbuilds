@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=NGUNIX (Mission Pack 1)
+GenericName=NetQuake Greets Unix
+Type=Application
+Comment=Faithful Quake engine with optional features.
+Exec=ngunix -winsize 640 480 -data id1 -game hipnotic && sleep 20
+Icon=ngunix
+Terminal=true
+Categories=Game

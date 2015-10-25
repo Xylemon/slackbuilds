@@ -7,7 +7,7 @@
 #
 # Based on:
 # SBo's cmake-template
-# Bits of Virtualbox SlackBuild by Heinz Wiesinger, Amsterdam, The Netherlands
+# Bits of the Mumble SlackBuild by Edward W. Koenig <kingbeowulf@gmail.com>
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -64,12 +64,17 @@ else
 fi
 
 BUILD_FMOD=""
+BUILD_FMODLD=""
 BUILD_NOASM=""
 BUILD_XMMS=""
 
 
 if [ "$FMOD" = "yes" ]; then
-  BUILD_FMOD="-DFMOD LDFLAGS=-lfmodex"
+  BUILD_FMOD="-DFMOD"
+fi
+
+if [ "$FMOD" = "yes" ]; then
+  BUILD_FMODLD="LDFLAGS=-lfmodex"
 fi
 
 if [ "$NOASM" = "yes" ]; then
@@ -96,7 +101,7 @@ find -L . \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 # Builds release for we don't need a debug, at least I assume you don't
-make build_release 'BASE_CFLAGS='"$BUILD_FMOD $BUILD_NOASM $BUILD_XMMS"
+make build_release $BUILD_FMODLD 'BASE_CFLAGS='"$BUILD_FMOD $BUILD_NOASM $BUILD_XMMS"
 
 # Makes these folders so we can copy it into the Slackware games standard
 # It goes into a sub folder because this can allow installation of
@@ -112,16 +117,21 @@ mkdir -p $PKG/usr/share/pixmaps
 cp -a ngunix.x11 $PKG/usr/share/games/quake/ngunix
 
 # Copies over shell script to play with ease
-cp -a $CWD/stuff/ngunix $PKG/usr/games
+cp -a $CWD/ngunix $PKG/usr/games
 chmod 0755 $PKG/usr/games/ngunix
 
 # Copies over desktop file and icon
-cp -a $CWD/stuff/ngunix.desktop $PKG/usr/share/applications
-cp -a $CWD/stuff/ngunix.xpm $PKG/usr/share/pixmaps
+cp -a $CWD/ngunix.desktop $PKG/usr/share/applications
+cp -a $CWD/ngunixmalice.desktop $PKG/usr/share/applications
+cp -a $CWD/ngunixmp1.desktop $PKG/usr/share/applications
+cp -a $CWD/ngunixmp2.desktop $PKG/usr/share/applications
+cp -a $CWD/ngunixshrak.desktop $PKG/usr/share/applications
+cp -a $CWD/ngunixxmen.desktop $PKG/usr/share/applications
+cp -a icon.xpm $PKG/usr/share/pixmaps/ngunix.xpm
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  CMDS CVARS LICENSE README \
+  LICENSE README \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 

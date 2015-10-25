@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=NGUNIX (X-Men)
+GenericName=NetQuake Greets Unix
+Type=Application
+Comment=Faithful Quake engine with optional features.
+Exec=ngunix -winsize 640 480 -data id1 -game xmen && sleep 20
+Icon=ngunix
+Terminal=true
+Categories=Game

@@ -6,8 +6,11 @@ Alternatively, you could configure NGUNIX to look and behave exactly like DOSQua
 similar to Chocolate Doom.
 
 Since it's based on old ASM code, it builds a 32 bit version only. Besides the compat32 packages of
-gcc, you'll also need: libXext-compat32, libX11-compat32, libXau-compat32, libxcb-compat32,
-libXdmcp-compat32, and libXxf86dga-compat32. You can get these from AlienBOB's 32bit repo.
+gcc, you'll also need a compat package of gdk-pixbuf and gtk2. You can get these from AlienBOB's
+32bit repo.
+
+If you wish to use no ASM code, and even take a shot at ARM compiling, Do
+"NOASM=yes ./NGUNIX.SlackBuild" to build with only C code. 24-bit lighting will NOT work.
 
 fmodapi 32bit packages is an optional dependency, for ogg and flac music play back. Activate it by
 doing "FMOD=yes ./NGUNIX.SlackBuild" to build support.
@@ -24,8 +27,8 @@ Your id1 folder (and mods) must go into, "/usr/share/games/quake/ngunix", for th
 folder for data. You should have permissions to modify this folder with the games group.
 
 Higher resolutions (ex. 1024x768) and mods will use a bit of memory and go over x11quake's default of
-8 megs. To fix this, simply, "add -mem 12" to up the amount used. The number may need to be higher
-or lower depending on what you're doing.
+8 megs. To fix this, simply add, "-mem 12". The number may need to be higher or lower depending on 
+what you're doing.
 
 Some recommendations: VisPatch for transparent water, .lit files for colored lighting, .rtlights
 files for coronas.

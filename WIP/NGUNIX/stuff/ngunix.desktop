@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=NGUNIX
-GenericName=Engoo Quake Engine for Unix
-Type=Application
-Comment=Faithful Quake engine with optional features. Fork of Engoo.
-Exec=ngunix
-Icon=ngunix
-Terminal=false
-Categories=Game
