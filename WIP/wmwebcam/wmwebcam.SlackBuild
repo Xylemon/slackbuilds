@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Slackware build script for Chocolate Duke 3D
+# Slackware build script for wmwebcam-fixed
 #
 # Copyright 2015 Gethyn ThomasQuail <gethyn@bloodbathsoftworks.com>
 # All rights reserved.
@@ -25,8 +25,8 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=chocolate_duke3D
-VERSION=${VERSION:-dd8db653e08cc3029a84dbfd36b2c927a8d3e8fc}
+PRGNAM=wmwebcam
+VERSION=${VERSION:-0.3.5}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -62,9 +62,9 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-$VERSION
-unzip $CWD/$PRGNAM-$VERSION.zip || unzip $CWD/$VERSION.zip
-cd $PRGNAM-$VERSION
+rm -rf $PRGNAM-$VERSION-fixed
+tar xvf $CWD/$PRGNAM-$VERSION-fixed.tar.gz
+cd $PRGNAM-$VERSION-fixed
 chown -R root:root .
 find -L . \
  \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
@@ -72,36 +72,17 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-# Let's compile!
-./autogen.sh
-./configure
+# Customization patch
+patch -p1 < $CWD/customize.patch
+
 make
 
-# Makes these folders so we can copy it into the Slackware games standard
-mkdir -p $PKG/usr/share/games/duke3d
-mkdir -p $PKG/usr/games
-
-# Make it so games group can access folder
-chgrp games $PKG/usr/share/games/duke3d
-chmod 774 $PKG/usr/share/games/duke3d
-
-# Makes desktop file related directories
-mkdir -p $PKG/usr/share/applications
-mkdir -p $PKG/usr/share/pixmaps
-
-# Copies over compiled binary
-cp -a chocolate-duke3d $PKG/usr/share/games/duke3d
-
-# Copies over shell script to play with ease
-cp -a $CWD/chocolate-duke3d $PKG/usr/games
-chmod 0755 $PKG/usr/games/chocolate-duke3d
-
-# Copies over desktop file and icon
-cp -a $CWD/chocolate-duke3d.desktop $PKG/usr/share/applications
-cp -a $CWD/chocolate-duke3d.png $PKG/usr/share/pixmaps
+mkdir -p $PKG/usr/bin
+mv wmwebcam $PKG/usr/bin
+mv wmwebcam.pl $PKG/usr/bin
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a README.md $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a README COPYING Changelog $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install

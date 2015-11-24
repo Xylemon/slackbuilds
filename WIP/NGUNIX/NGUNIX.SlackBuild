@@ -113,6 +113,10 @@ mkdir -p $PKG/usr/games
 mkdir -p $PKG/usr/share/applications
 mkdir -p $PKG/usr/share/pixmaps
 
+# Make it so games group can access folder
+chgrp games $PKG/usr/share/games/quake/ngunix
+chmod 774 $PKG/usr/share/games/quake/ngunix
+
 # Copies over compiled binary
 cp -a ngunix.x11 $PKG/usr/share/games/quake/ngunix
 

@@ -3,6 +3,7 @@
 # Slackware build script for chocolate-doom
 
 # Written by B. Watson (yalhcru@gmail.com)
+# Modded by Gethyn ThomasQuail (gethyn@bloodbathsoftworks.com)
 
 # Licensed under the WTFPL. See http://www.wtfpl.net/txt/copying/ for details.
 
@@ -74,6 +75,13 @@ CXXFLAGS="$SLKCFLAGS" \
 
 make
 make install DESTDIR=$PKG
+
+# Makes shared game data folder, useful for main PWADs and mods
+mkdir -p $PKG/usr/share/games/doom
+
+# Make it so games group can access folder
+chgrp games $PKG/usr/share/games/doom
+chmod 774 $PKG/usr/share/games/doom
 
 # install-strip fails to strip the *-setup binaries.
 strip $PKG/usr/games/*

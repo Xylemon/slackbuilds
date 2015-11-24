@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Slackware build script for Chocolate Duke 3D
+# Slackware build script for wmwebcam-fixed
 #
 # Copyright 2015 Gethyn ThomasQuail <gethyn@bloodbathsoftworks.com>
 # All rights reserved.
@@ -25,8 +25,8 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=chocolate_duke3D
-VERSION=${VERSION:-dd8db653e08cc3029a84dbfd36b2c927a8d3e8fc}
+PRGNAM=wmquake
+VERSION=${VERSION:-1.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -63,7 +63,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-unzip $CWD/$PRGNAM-$VERSION.zip || unzip $CWD/$VERSION.zip
+tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find -L . \
@@ -72,36 +72,25 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-# Let's compile!
-./autogen.sh
-./configure
 make
 
-# Makes these folders so we can copy it into the Slackware games standard
-mkdir -p $PKG/usr/share/games/duke3d
+# Makes shared game folder
+mkdir -p $PKG/usr/share/games/quake/wmquake
 mkdir -p $PKG/usr/games
 
 # Make it so games group can access folder
-chgrp games $PKG/usr/share/games/duke3d
-chmod 774 $PKG/usr/share/games/duke3d
-
-# Makes desktop file related directories
-mkdir -p $PKG/usr/share/applications
-mkdir -p $PKG/usr/share/pixmaps
+chgrp games $PKG/usr/share/games/quake/wmquake
+chmod 774 $PKG/usr/share/games/quake/wmquake
 
 # Copies over compiled binary
-cp -a chocolate-duke3d $PKG/usr/share/games/duke3d
+cp -a wmquake $PKG/usr/share/games/quake/wmquake
 
 # Copies over shell script to play with ease
-cp -a $CWD/chocolate-duke3d $PKG/usr/games
-chmod 0755 $PKG/usr/games/chocolate-duke3d
-
-# Copies over desktop file and icon
-cp -a $CWD/chocolate-duke3d.desktop $PKG/usr/share/applications
-cp -a $CWD/chocolate-duke3d.png $PKG/usr/share/pixmaps
+cp -a $CWD/wmquake $PKG/usr/games
+chmod 0755 $PKG/usr/games/wmquake
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a README.md $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a README.INSTALL README.source README.wmquake $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
