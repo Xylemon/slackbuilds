@@ -27,9 +27,10 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=NGUNIX
-VERSION=${VERSION:-b7af7693e07b90984603e7e942d1676ddde897db}
+VERSION=${VERSION:-c2ef1fed75a21279a02de9723dbbbcd4a50c4453}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
+GAMDIR=usr/share/games/quake/ngunix
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -91,7 +92,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-unzip $CWD/$PRGNAM-$VERSION.zip
+unzip $CWD/$PRGNAM-$VERSION.zip || unzip  $CWD/$VERSION.zip
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find -L . \
@@ -103,35 +104,24 @@ find -L . \
 # Builds release for we don't need a debug, at least I assume you don't
 make build_release $BUILD_FMODLD 'BASE_CFLAGS='"$BUILD_FMOD $BUILD_NOASM $BUILD_XMMS"
 
-# Makes these folders so we can copy it into the Slackware games standard
-# It goes into a sub folder because this can allow installation of
-# other Quake engines.
-mkdir -p $PKG/usr/share/games/quake/ngunix
-mkdir -p $PKG/usr/games
-
-# Makes desktop file related directories
-mkdir -p $PKG/usr/share/applications
-mkdir -p $PKG/usr/share/pixmaps
-
-# Make it so games group can access folder
-chgrp games $PKG/usr/share/games/quake/ngunix
-chmod 774 $PKG/usr/share/games/quake/ngunix
+# Build launcher
+cd launcher
+make
+cd ../
 
 # Copies over compiled binary
-cp -a ngunix.x11 $PKG/usr/share/games/quake/ngunix
+install -D -m 0755 ngunix.x11 $PKG/$GAMDIR/ngunix.x11
+install -D -m 0755 launcher/ngunix-launcher $PKG/usr/games/ngunix-launcher 
 
-# Copies over shell script to play with ease
-cp -a $CWD/ngunix $PKG/usr/games
-chmod 0755 $PKG/usr/games/ngunix
+# Desktop and launcher related stuff
+install -D -m 0644 icon.xpm $PKG/usr/share/pixmaps/ngunix.xpm
+install -D -m 0644 $CWD/ngunix.desktop $PKG/usr/share/applications/ngunix.desktop
+install -D -m 0644 $CWD/ngunixlauncher.desktop $PKG/usr/share/applications/ngunixlauncher.desktop
+install -D -m 0755 $CWD/ngunix $PKG/usr/games/ngunix
 
-# Copies over desktop file and icon
-cp -a $CWD/ngunix.desktop $PKG/usr/share/applications
-cp -a $CWD/ngunixmalice.desktop $PKG/usr/share/applications
-cp -a $CWD/ngunixmp1.desktop $PKG/usr/share/applications
-cp -a $CWD/ngunixmp2.desktop $PKG/usr/share/applications
-cp -a $CWD/ngunixshrak.desktop $PKG/usr/share/applications
-cp -a $CWD/ngunixxmen.desktop $PKG/usr/share/applications
-cp -a icon.xpm $PKG/usr/share/pixmaps/ngunix.xpm
+# Make it so the games group can access the folders
+chgrp games $PKG/$GAMDIR
+chmod 774 $PKG/$GAMDIR
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \

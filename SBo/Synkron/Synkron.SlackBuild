@@ -75,7 +75,7 @@ find -L . \
 # Build release version
 lrelease Synkron.pro
 qmake -config release
-make 
+make
 
 # Have to manually do this sadly
 mkdir -p $PKG/usr/bin
@@ -86,13 +86,11 @@ mkdir -p $PKG/usr/share/applications
 mkdir -p $PKG/usr/share/pixmaps
 
 # Copies over desktop file and icon
-cp -a $CWD/stuff/synkron.desktop $PKG/usr/share/applications
-cp -a $CWD/stuff/synkron.png $PKG/usr/share/pixmaps
+cp -a $CWD/synkron.desktop $PKG/usr/share/applications
+cp -a $CWD/synkron.png $PKG/usr/share/pixmaps
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a \
-  readme.txt gpl.txt \
-  $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a readme.txt gpl.txt $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install

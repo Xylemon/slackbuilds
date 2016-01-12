@@ -1,0 +1,4 @@
+ #!/bin/bash
+
+cd /usr/share/games/unrealgold/System
+./UnrealXLinux.bin $*

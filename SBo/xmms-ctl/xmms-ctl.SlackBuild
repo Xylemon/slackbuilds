@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Slackware build script for xmms-ctl 
+# Slackware build script for xmms-ctl
 #
 # Copyright 2015 Gethyn ThomasQuail <gethyn@bloodbathsoftworks.com>
 # All rights reserved.
@@ -57,13 +57,13 @@ else
   LIBDIRSUFFIX=""
 fi
 
-set -e # Exit on most errors
+set -e
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-unzip $CWD/$PRGNAM-$VERSION.zip
+unzip $CWD/$PRGNAM-$VERSION.zip || unzip $CWD/$VERSION.zip
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find -L . \
@@ -72,23 +72,18 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-# Let's compile!
 make
 
-# Make bin folder and copy over executable
 mkdir -p $PKG/usr/bin
 cp -a xmms-ctl $PKG/usr/bin
 
-# Compresses man page and moves it into place
 mkdir -p $PKG/usr/man/man1
 mv xmms-ctl.man xmms-ctl.1
 gzip -9 xmms-ctl.1
 mv xmms-ctl.1.gz $PKG/usr/man/man1
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a \
-  LICENSE README \
-  $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a LICENSE README $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install

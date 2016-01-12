@@ -7,7 +7,7 @@
 
       		      |-----handy-ruler--------------------------------------------------------|
 Window_Manager_Scripts: Window_Manager_Scripts (WM Agnostic Shell Scripts)
-Window_Manager_Scripts: 
+Window_Manager_Scripts:
 Window_Manager_Scripts: Window-Manager-Scripts is a series of window manager agnostic shell
 Window_Manager_Scripts: scripts. They're intended to be lightweight, relying on few deps as
 Window_Manager_Scripts: possible and include a configuration file for easy customization.

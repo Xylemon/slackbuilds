@@ -67,6 +67,12 @@ fi
 # Linux 4.0 and above fix by oss117
 patch -p1 < $CWD/oss-v4.2-linux-4.0.patch
 
+# Enables vmix Production Quality
+#patch -p1 < $CWD/production.patch
+
+# Forces vmix Production Quality
+patch -p1 < $CWD/forceproduction.patch
+
 # GCC 5 fix by alexdw
 patch -p0 < $CWD/gcc-5.patch
 

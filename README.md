@@ -16,6 +16,8 @@ Mods - My mods to various SlackBuilds. May never evolve past simple personal edi
 
 Mirrors - No mods or changes or even mine, just simple mirrors of official Slackware SlackBuilds since slpkg sadly doesn't support building from Slackware's repo.
 
+Other - Stuff that's finished, but isn't going on SBo, at least not anytime soon.
+
 SBo - SlackBuilds I'm currently managing on SlackBuilds.org
 
 WIP - Obviously work in progress and not on SlackBuilds.org (yet). Keep in mind, some of these may not even work! Just layout stuff if anything.

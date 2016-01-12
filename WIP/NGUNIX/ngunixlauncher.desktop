@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=NGUNIX Launcher
+GenericName=NGUNIX Launcher
+Type=Application
+Comment=Launcher for NGUNIX to manage mods and more
+Exec=ngunix-launcher /usr/share/games/quake/ngunix/
+Icon=ngunix
+Terminal=false
+Categories=Game

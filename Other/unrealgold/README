@@ -1,0 +1,16 @@
+Unreal Gold with the latest Epic Games approved fan patches. Play the classic with many new
+features!
+
+Notes:
+
+This is 32-bit only.
+
+Your game data (and mods) must go into "/usr/share/games/unrealgold". You should have
+permissions to modify this folder with the games group.
+
+The game may fail to start without any error in terminal. This is probably related to the
+fact fmod libs are missing. The libfmod.so tarball contains the needed libs. Simply move
+them into "/usr/share/games/unrealgold/System" and launch the game again.
+
+It's probably best to put the game data downloaded from Steam or from your CDs in
+"/usr/share/games/unrealgold" before installing this SlackBuild.

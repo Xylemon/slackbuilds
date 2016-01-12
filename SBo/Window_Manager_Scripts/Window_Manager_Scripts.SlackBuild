@@ -36,13 +36,13 @@ TMP=${TMP:-/tmp/SBo}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
-set -e # Exit on most errors
+set -e
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $RPRGNAM-$VERSION
-unzip $CWD/$RPRGNAM-$VERSION.zip
+unzip $CWD/$RPRGNAM-$VERSION.zip || unzip $CWD/$VERSION.zip
 cd $RPRGNAM-$VERSION
 chown -R root:root .
 find -L . \
@@ -53,14 +53,10 @@ find -L . \
 
 # Copy over shell scripts to bin
 mkdir -p $PKG/usr/bin
-cp -a \
-  batterylow importadvanced timer-xy videobackground \
-  $PKG/usr/bin/
+cp -a batterylow importadvanced timer-xy videobackground $PKG/usr/bin/
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a \
-  LICENSE README.Credits README.md .xyscripts \
-  $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a LICENSE README.Credits README.md .xyscripts $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
