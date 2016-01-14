@@ -20,6 +20,8 @@ Other - Stuff that's finished, but isn't going on SBo, at least not anytime soon
 
 SBo - SlackBuilds I'm currently managing on SlackBuilds.org
 
+Scripts - Scripts for Slackware, not SlackBuild scripts but they do other useful things!
+
 WIP - Obviously work in progress and not on SlackBuilds.org (yet). Keep in mind, some of these may not even work! Just layout stuff if anything.
 
 # Copyright
