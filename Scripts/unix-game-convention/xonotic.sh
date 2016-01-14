@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Unix convention conversion for Xonotic
 
 # Game, Unix Game Dir, Game's Original location

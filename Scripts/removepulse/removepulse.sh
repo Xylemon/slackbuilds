@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Removes PulseAudio and other garbage that comes with it, UNTESTED ATM, NEEDS TO BE RAN AS ROOT
 # Some code studied from: http://slackbuilds.org/slackbuilds/14.1/system/wine-staging/wine-staging.SlackBuild
 

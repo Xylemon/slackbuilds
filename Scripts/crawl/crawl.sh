@@ -1,3 +1,5 @@
+#!/bin/sh
+
 w="wget"
 $w http://slackbuilds.org/slackbuilds/14.1/games/chocolate_duke3D.tar.gz
 $w http://slackbuilds.org/slackbuilds/14.1/graphics/gimp-plugin-bimp.tar.gz
