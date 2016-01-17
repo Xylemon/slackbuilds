@@ -36,13 +36,15 @@ echo "Reactivating ALSA..."
 fi
 
 # Install apulse
+# We grab back speexdsp for greater compatibility 
 if [ "$APULSE" = "yes" ]; then
 echo "Compiling and installing apulse (PulseAudio emulation for programs)..."
+slackpkg install speexdsp
 wget http://slackbuilds.org/slackbuilds/14.1/audio/apulse.tar.gz
 tar xvf apulse.tar.gz
 cd apulse.tar.gz
 wget https://github.com/i-rinat/apulse/archive/1a395013489c09fcd73d2f58994e8a53a1b903c2.tar.gz
-sh apulse.SlackBuild
+GLOBAL_LIBS=yes sh apulse.SlackBuild
 installpkg /tmp/apulse-*.tgz
 cd ../
 fi
