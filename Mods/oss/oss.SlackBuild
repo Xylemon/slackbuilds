@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Slackware build script for OSS 4.
+# Slackware build script for OSS4.
 
 # Written by Dugan Chen (thedoogster [at] gmail [dot] com).
 # Modded by Gethyn ThomasQuail (gethyn@bloodbathsoftworks.com).
@@ -67,14 +67,13 @@ fi
 # Linux 4.0 and above fix by oss117
 patch -p1 < $CWD/oss-v4.2-linux-4.0.patch
 
-# Enables vmix Production Quality
-#patch -p1 < $CWD/production.patch
-
-# Forces vmix Production Quality
-patch -p1 < $CWD/forceproduction.patch
-
 # GCC 5 fix by alexdw
 patch -p0 < $CWD/gcc-5.patch
+
+# Allow higher quality vmix resamplers (from funtoo ebuild)
+
+sed -e "s;grc_max=3;grc_max=6;g" -i "setup/srcconf.c"
+sed -e "s;GRC_MAX_QUALITY=3;GRC_MAX_QUALITY=6;g" -i "configure"
 
 mkdir build && cd build
 ../configure
@@ -100,6 +99,9 @@ mkdir -p $PKG/etc/xdg/autostart
 ( cd $PKG/etc/xdg/autostart
   ln -sf /usr/share/applications/ossxmix.desktop .
 )
+
+# Install blacklist file
+install -D -m 0644 $CWD/blacklist.conf $PKG/etc/modprobe.d/blacklist.conf.new
 
 # Fix location of manual pages
 mv $PKG/usr/share/man $PKG/usr

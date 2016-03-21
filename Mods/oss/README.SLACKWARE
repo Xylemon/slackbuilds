@@ -3,8 +3,11 @@ README.SLACKWARE for oss
 After installing the package, do the following:
 
 1. Blacklist the alsa modules for your sound card.
-   The output of "lsmod | grep snd" should give you a list of which modules
-   will need to be blacklisted.
+   Try it with the one included. Or you can use the output of 
+   "lsmod | grep snd", as that should give you a list of which modules 
+   will need to be blacklisted. The blacklist file is at:
+   /etc/modprobe.d/blacklist.conf If you already have one, a new one
+   called blacklist.conf.new is created, just merge them together.
 
 2. Make /etc/rc.d/rc.alsa non-executable:  chmod 0644 /etc/rc.d/rc.alsa
 
@@ -22,3 +25,9 @@ After installing the package, do the following:
 
 7. Configure applications to use OSS instead of ALSA; typically, this will 
    involve setting the "Sound Command" or some such to use "ossplay" 
+
+Uninstalling OSS:
+
+If you intend to go back to ALSA or PulseAudio, remember to remove the
+blacklist file and make rc.alsa executable again. Also remove the bit
+you may have added to rc.local to automatically start OSS.

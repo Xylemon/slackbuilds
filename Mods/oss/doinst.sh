@@ -19,6 +19,7 @@ if [ -e etc/rc.d/rc.oss ]; then
 fi
 
 config etc/oss.conf.new
+config etc/modprobe.d/blacklist.conf.new
 config etc/rc.d/rc.oss.new
 
 if [ -x /usr/bin/update-desktop-database ]; then

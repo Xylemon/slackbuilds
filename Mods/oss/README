@@ -5,6 +5,8 @@ Among the benefits are:
 * volume levels being settable for each application individually
 * better latency than ALSA in most cases
 
+This SlackBuild enables the Production Quality resampler for vmix.
+
 If your WM/DE supports tray icons, you will have one for the OSS mixer.
 
 See README.SLACKWARE for post-installation instructions and setup information.
